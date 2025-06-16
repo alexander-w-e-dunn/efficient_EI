@@ -37,7 +37,7 @@ sigma_s=2;                             % noise strength for the generation of th
 %% get decoding weights and connectivity weights
 
 [w,J] = w_fun(M,N,q,d);
-
+J{2} = impose_lattice_topology(J{2}, 20);  % Convert J{2} (I-I connections) to lattice topology; use 20 nearest neighbors (K=20)
 %% set the stimulus features and the target signal
 
 T=(nsec*1000)./dt;
