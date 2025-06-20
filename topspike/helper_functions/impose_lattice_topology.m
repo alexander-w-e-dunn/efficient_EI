@@ -2,8 +2,8 @@ function J_out = impose_lattice_topology(J_in, K)
 % Enforce lattice topology and preserve input strength (weighted in-degree)
 
     N = size(J_in, 1);
-    J_out = zeros(N);
-    J_mask = zeros(N);  % binary mask of which connections are kept
+    J_out = zeros(N) + eye(N);
+    J_mask = zeros(N) + eye(N);  % binary mask of which connections are kept
 
     for i = 1:N
         for j = 1:K/2

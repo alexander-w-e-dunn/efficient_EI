@@ -38,18 +38,18 @@ sigma_s=2;                             % noise strength for the generation of th
 %% get decoding weights and connectivity weights
 % J is 4x1 cell, cell 1 is empty, 2,3 and 4 are II, IE, and EI connections
 [w,J] = w_fun(M,N,q,d);
-% % get n.nodes
-% nnodes = size(J{2},1);
-% % get n. connections
-% nedges = size(J{2},1) * (size(J{2},2)-1);
-% % get mean weighted degree to preserve
-% round(mean(degrees_dir(J{2})));
-% % set density
-% dens = 1.0;
-% % set desired K
-% K = ceil(nedges*dens*1/size(J{2},1)); 
-% % J{2} = full(adjacency(WattsStrogatz(nnodes,nnodes,0.5)));
-% J{2} = impose_lattice_topology(J{2}, K);  % Convert J{2} (I-I connections) to lattice topology; use K nearest neighbors
+% get n.nodes
+nnodes = size(J{2},1);
+% get n. connections
+nedges = size(J{2},1) * (size(J{2},2)-1);
+% get mean weighted degree to preserve
+round(mean(degrees_dir(J{2})));
+% set density
+dens = 0.1;
+% set desired K
+K = ceil(nedges*dens*1/size(J{2},1)); 
+% J{2} = full(adjacency(WattsStrogatz(nnodes,nnodes,0.5)));
+J{2} = impose_lattice_topology(J{2}, K);  % Convert J{2} (I-I connections) to lattice topology; use K nearest neighbors
 %% set the stimulus features and the target signal
 
 T=(nsec*1000)./dt;
