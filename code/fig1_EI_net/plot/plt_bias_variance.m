@@ -15,7 +15,7 @@ figname=['signal_bias_',ntype{type}];
 figname2=['boxplot_bias_',ntype{type}];
 
 %%
-addpath([cd,'/result/EI_net/'])
+addpath(['/Users/alexd/GitHub/efficient_EI','/result/EI_net/'])
 loadname=['bias_var_',ntype{type}];       
 load(loadname);
 savefile=pwd;

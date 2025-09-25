@@ -7,9 +7,9 @@ close all
 clear
 clc
 
-addpath([cd,'/code/function/'])
-saveres=0;
-showfig=0;
+% addpath([cd,'/code/function/'])
+saveres=1;
+showfig=1;
 
 ntype={'min_error','min_loss'};
 type=2;
@@ -55,6 +55,22 @@ tau_vec=cat(1,tau_x,tau_e,tau_i,tau_re, tau_ri);
 
 [w,J] = w_fun(M,N,q,d);
 
+% AD: here I perturb the S matrix with different topology
+% J is 4x1 cell, cell 1 is empty, 2,3 and 4 are II, IE, and EI connections
+
+% get n.nodes
+nnodes = size(J{2},1);
+% get n. connections
+nedges = size(J{2},1) * (size(J{2},2)-1);
+% get mean weighted degree to preserve
+round(mean(degrees_dir(J{2})));
+% set density
+dens = 0.9;
+% set desired K
+K = ceil(nedges*dens*1/size(J{2},1)); 
+% J{2} = full(adjacency(WattsStrogatz(nnodes,nnodes,0.5)));
+J{2} = impose_lattice_topology(J{2}, K);  % Convert J{2} (I-I connections) to lattice topology; use K nearest neighbors
+
 %% compute performance 
 
 T=nsec*1000/dt;
@@ -77,10 +93,15 @@ toc
 % time-and dimension-dependent bias of the estimates
 
 Bky=cell(2,1);
+% AD: initialise Vky
+Vky=cell(2,1);
 
 bigx=permute(repmat(x,1,1,ntr),[3,1,2]);
 Bky{1}=squeeze(mean(estE-bigx));
 Bky{2}=squeeze(mean(estE-estI)); 
+% AD: calculation of Vky missing so here:
+Vky{1}=squeeze(var(estE-bigx));
+Vky{2}=squeeze(var(estE-estI)); 
 
 % prepare for boxplot
 Bploty=cellfun(@(x) x(:),Bky,'un',0);
@@ -102,16 +123,19 @@ sigI=cell(2,1);
 sigI{1}=squeeze(mean(estE(:,1,:)));
 sigI{2}=squeeze(mean(estI(:,1,:)));
 
+% AD: tidx not computed so adding here in S
+% tidx = (0:T-1) * dt/1000;   % time vector in seconds
+tidx = (0:T-1) * dt;        % time in milliseconds
+
 %%
 if saveres==1
     
     param_name={{'N'},{'M'},{'tau_s'},{'beta'},{'sigmav'},{'tau_vec:X,E,I,rE,rI'},{'q'},{'d'},{'dt'},{'nsec'}};
     parameters={{N},{M},{tau_s},{beta},{sigmav},{tau_vec},{q},{d},{dt},{nsec}};
     
-    savefile='result/EI_net/';
+    savefile='/Users/alexd/GitHub/efficient_EI/result/EI_net/';
     savename=['bias_var_',ntype{type}];
     save([savefile,savename],'Bky','Bploty','Vky','Vploty','tidx','sigE','sigI','parameters','param_name')
-    
 end
 
 %%
