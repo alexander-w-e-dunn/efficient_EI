@@ -133,7 +133,8 @@ if saveres==1
     param_name={{'N'},{'M'},{'tau_s'},{'beta'},{'sigmav'},{'tau_vec:X,E,I,rE,rI'},{'q'},{'d'},{'dt'},{'nsec'}};
     parameters={{N},{M},{tau_s},{beta},{sigmav},{tau_vec},{q},{d},{dt},{nsec}};
     
-    savefile='/Users/alexd/GitHub/efficient_EI/result/EI_net/';
+    % savefile='/Users/alexd/GitHub/efficient_EI/result/EI_net/';
+    savefile='U:\GitHub\efficient_EI\result\EI_net\';
     savename=['bias_var_',ntype{type}];
     save([savefile,savename],'Bky','Bploty','Vky','Vploty','tidx','sigE','sigI','parameters','param_name')
 end

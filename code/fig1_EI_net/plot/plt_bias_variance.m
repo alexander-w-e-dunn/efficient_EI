@@ -7,7 +7,7 @@ close all
 clear
 clc
 
-savefig=[0,0];
+savefig=[1,1];
 ntype={'min_error','min_loss'};
 type=2; % 1 for minimizing error, 2 for minimizing loss
 
@@ -15,10 +15,11 @@ figname=['signal_bias_',ntype{type}];
 figname2=['boxplot_bias_',ntype{type}];
 
 %%
-addpath(['/Users/alexd/GitHub/efficient_EI','/result/EI_net/'])
+% addpath(['/Users/alexd/GitHub/efficient_EI','/result/EI_net/'])
+addpath(['U:\GitHub\efficient_EI','\result\EI_net\'])
 loadname=['bias_var_',ntype{type}];       
 load(loadname);
-savefile=pwd;
+savefile='U:\GitHub\efficient_EI\result\EI_net\';
 
 By=cellfun(@mean, Bploty);
 display(By,'average bias of estimators E and I')
@@ -60,6 +61,7 @@ set(H, 'Units','centimeters', 'Position', pos_vec)
 set(H,'PaperPositionMode','Auto','PaperUnits', 'centimeters','PaperSize',[pos_vec(3), pos_vec(4)]) % for saving in the right size
 
 if savefig(2)==1
+    pause(1)
     print(H,[savefile,figname2],'-dpng','-r300');
 end
 
